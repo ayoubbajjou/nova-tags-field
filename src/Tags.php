@@ -38,6 +38,10 @@ class Tags extends Field
                     $query->where('type', $this->meta()['type']);
                 }
             })->get();
+            
+             if (!isset($tags)) {
+                $tags = collect();
+            }
 
             return $tags->map(function (Tag $tag) use ($class, $uriKey) {
                 $href = rtrim(Nova::path(), '/').'/resources/'.$uriKey.'/'.$tag->id;
@@ -107,7 +111,11 @@ class Tags extends Field
         if (Arr::has($this->meta(), 'type')) {
             $tags = $tags->where('type', $this->meta()['type']);
         }
-
+        
+         if (!isset($tags)) {
+              $tags = collect();
+         }
+        
         return $tags->map(function (Tag $tag) {
             return e($tag->name);
         })->values();
